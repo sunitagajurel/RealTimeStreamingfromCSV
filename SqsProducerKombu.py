@@ -2,8 +2,6 @@ import sys
 from kombu import Connection
 import time 
 
-
-
 global conn 
 conn = None 
 
@@ -31,5 +29,5 @@ def send_message_SQS(message):
         print(e)
 
 if __name__ == "__main__":
-    send_message_SQS(message="I dont know what to do, toba me aage kya karu")
+    send_message_SQS(message="Hello World")
     

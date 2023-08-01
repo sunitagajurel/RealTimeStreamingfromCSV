@@ -13,7 +13,7 @@ import codecs
 
 try:
     #using codecs to handle to non-unicode symbols in the file
-    with open(r"{filepath}",encode = 'utf-8') as csv_file:
+     with codecs.open(r"C:\Users\sunit\Desktop\CapstoneProject\data\nearby-all-public-posts\salesData.csv",'r',encoding ='utf-8') as csv_file:
         for line in csv_file:
             print(f'published_message{line}')
             msg_no += 1 
@@ -21,7 +21,7 @@ try:
 
             if msg_no >= combined_message_count:
                 #send_message to the messaging service 
-                # SqsProducerKombu.send_message_SQS(combined_message)
+                SqsProducerKombu.send_message_SQS(combined_message)
                 print(f'consumed message:{combined_message},{msg_consumed}')
                 combined_message = ""
                 msg_no = 0

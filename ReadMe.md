@@ -1,6 +1,9 @@
 `pip install kombu`
 `pip install botocore`
 `pip install tzdata`
+`pip install boto3`
+`pip install pika`
+
 
 to install python packagesin a trageted folder: 
 pip install -r requirements.txt --target=./python_template/deploy/pacakge 

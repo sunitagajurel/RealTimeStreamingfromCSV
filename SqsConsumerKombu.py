@@ -5,6 +5,9 @@ import json
 from collections import defaultdict
 
 
+sqs_region = 'us-east-2'
+sqs_access_key = 'AKIA5AU75AEOLPJVFVGD'
+sqs_secret_key = 'fYktNgrZTSFGLZwEjh44sV3+E6GkfpORz'
 
 global conn 
 conn =None 
@@ -14,7 +17,8 @@ consumer = None
 
 '''connect object can take protocol and transport option , we can create a separate file having the protocol and  transport option for each messaging service and fetch those based on the message broker neede'''
 
-def connect():
+# creating connection object 
+def connect(): 
     global conn
     conn = Connection("sqs://", transport_options={
                                     'region': sqs_region,

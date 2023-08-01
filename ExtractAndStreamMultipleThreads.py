@@ -29,9 +29,8 @@ class Producer(threading.Thread):
     global mutex, empty_cells, filled_cells
      
     try:
-      with codecs.open(r"{file path}",'r',encoding ='utf-8') as csv_file:
+      with codecs.open(r"C:\Users\sunit\Desktop\CapstoneProject\data\nearby-all-public-posts\posts_1",'r',encoding ='utf-8') as csv_file:
         for line in csv_file:
-            print(line)
             empty_cells.acquire()
             mutex.acquire()
             
@@ -43,7 +42,7 @@ class Producer(threading.Thread):
             mutex.release()
             filled_cells.release()
             
-            time.sleep(1)
+            # time.sleep(1)
     except KeyboardInterrupt as e:
       print(e)
 
@@ -76,7 +75,7 @@ class Consumer(threading.Thread):
 
       if msg_no >= self.combined_message_count:
           #send_message to the messaging service 
-        # SqsProducerKombu.send_message_SQS(combined_message)
+        SqsProducerKombu.send_message_SQS(combined_message)
         print(f'consumed message:{combined_message},{msg_consumed}')
         combined_message = ""
         msg_no = 0
@@ -84,7 +83,7 @@ class Consumer(threading.Thread):
       mutex.release()
       empty_cells.release()      
        
-      time.sleep(2)
+      # time.sleep(2)
        
       msg_consumed += 1
     
