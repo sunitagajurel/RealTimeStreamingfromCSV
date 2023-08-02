@@ -5,10 +5,6 @@ import json
 from collections import defaultdict
 
 
-sqs_region = 'us-east-2'
-sqs_access_key = 'AKIA5AU75AEOLPJVFVGD'
-sqs_secret_key = 'fYktNgrZTSFGLZwEjh44sV3+E6GkfpORz'
-
 global conn 
 conn =None 
 consumer = None
