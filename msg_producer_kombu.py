@@ -3,11 +3,6 @@ from kombu import Connection
 import json
 import time
 
-
-sqs_region = 'us-east-2'
-sqs_access_key = 'AKIA5AU75AEOLPJVFVGD'
-sqs_secret_key = 'fYktNgrZTSFGLZwEjh44sV3+E6GkfpORz'
-
 class producer():
     def __init__ (self,no_of_message_to_combine,messaging_service): 
         self.no_of_message_to_combine = no_of_message_to_combine
@@ -72,7 +67,7 @@ class producer():
         try:
             #using codecs to handle to non-unicode symbols in the file
             row_read_start_time = time.time()
-            with codecs.open(r"",'r',encoding ='utf-8') as csv_file:
+            with codecs.open(r"C:\Users\sunit\Desktop\CapstoneProject\data\nearby-all-public-posts\salesData.csv",'r',encoding ='utf-8') as csv_file:
                 for line in csv_file:
                     combined_message_no += 1 
                     combined_message += line
