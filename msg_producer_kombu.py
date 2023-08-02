@@ -3,11 +3,6 @@ from kombu import Connection
 import json
 import time
 
-
-sqs_region = 'us-east-2'
-sqs_access_key = 'AKIA5AU75AEOLPJVFVGD'
-sqs_secret_key = 'fYktNgrZTSFGLZwEjh44sV3+E6GkfpORz'
-
 class producer():
     def __init__ (self,no_of_message_to_combine,messaging_service): 
         self.no_of_message_to_combine = no_of_message_to_combine
