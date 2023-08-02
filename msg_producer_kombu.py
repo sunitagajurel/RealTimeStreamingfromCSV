@@ -1,6 +1,7 @@
 import codecs
 from kombu import Connection
 import json
+import time
 
 
 sqs_region = 'us-east-2'
@@ -15,14 +16,13 @@ class producer():
 
     
     def publish(self,message,queue_name):
-        print("publishing")
         producer = self.conn.Producer()
         try:
             '''routing key'''
             ''' rabbitmq : routing_key'''
             '''sqs : queue'''
             '''kafka topic'''
-            producer.publish(message,routing_key= queue_name)
+            producer.publish(message,routing_key=queue_name)
 
         except Exception as e: 
             print(e)
@@ -48,8 +48,7 @@ class producer():
                                     'access_key': sqs_access_key,
                                     'secret_key': sqs_secret_key,
                                     })
-        print("connection established")
-        queue_name = "CaesarQ"
+        queue_name = "withoutKombu"
         self.publish(msg,queue_name)
 
     def publish_to_rabbitMQ(self,msg):
@@ -67,13 +66,13 @@ class producer():
 
     def read_and_publish(self):
         publish_func = self.find_publish_function()
-        print(f"connecting to {self.messaging_service}")
         combined_message_no = 0 
         combined_message = ""
 
         try:
             #using codecs to handle to non-unicode symbols in the file
-            with codecs.open(r"C:\Users\sunit\Desktop\CapstoneProject\data\nearby-all-public-posts\salesData.csv",'r',encoding ='utf-8') as csv_file:
+            row_read_start_time = time.time()
+            with codecs.open(r"",'r',encoding ='utf-8') as csv_file:
                 for line in csv_file:
                     combined_message_no += 1 
                     combined_message += line
@@ -82,13 +81,16 @@ class producer():
                         #send_message to the messaging service 
                         publish_func(combined_message)
                         # SqsProducerKombu.send_message_SQS(combined_message)
-                        print(f'published message:{combined_message}')
                         combined_message = ""
                         combined_message_no = 0 
+
+                time_elapsed = time.time() - row_read_start_time
+                return time_elapsed
           
         except Exception as e: 
             print(e)
 
-prod = producer(1,"RabbitMQ")
+prod = producer(1000,"kafka")
 
-prod.read_and_publish()
+for i in range(10):
+    print(prod.read_and_publish())

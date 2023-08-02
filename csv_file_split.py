@@ -34,9 +34,6 @@ def loop_through_csv(csv, split_threshold, column_headers):
         row_counter += 1
 
 def main():
-
-    # grab inputs from user
-    # csv_file_path = "C:/Users/sunit/Desktop/CapstoneProject/data/nearby-all-public-posts/allposts.csv"
     split_threshold = 1000000
 
     with codecs.open(r"",'r',encoding ='utf-8') as csv_file:

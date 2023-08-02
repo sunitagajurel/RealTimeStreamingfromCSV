@@ -3,4 +3,6 @@ kombuenv
 package
 Kafkaproducer.py
 credentials
-
+SqsProducerKombu.py
+SqsConsumerKombu.py
+NormalStream.py
