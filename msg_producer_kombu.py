@@ -8,21 +8,21 @@ class producer():
         self.no_of_message_to_combine = no_of_message_to_combine
         self.conn = None
         self.messaging_service = messaging_service.lower()
-
-    
+        self.message_count = 0
+        self.terminate = False
+        
     def publish(self,message,queue_name):
         producer = self.conn.Producer()
         try:
             '''routing key'''
             ''' rabbitmq : routing_key'''
             '''sqs : queue'''
-            '''kafka topic'''
+            '''kafka:topic'''
             producer.publish(message,routing_key=queue_name)
 
         except Exception as e: 
             print(e)
-
-            
+      
     ''' Finding publish function based on the input measaging service '''
     def find_publish_function(self):
         service = self.messaging_service
@@ -59,33 +59,44 @@ class producer():
         topic = "hello"
         self.publish(msg,topic)
 
+    def exit_publish(self):
+        self.terminate = True 
+
     def read_and_publish(self):
+        self.terminate = False
+        message_published = 0
+        message_read = 0 
         publish_func = self.find_publish_function()
         combined_message_no = 0 
         combined_message = ""
+        message_size = 0 
+        timer = Timer(1,self.exit_publish)
 
         try:
+            timer.start()
             #using codecs to handle to non-unicode symbols in the file
-            row_read_start_time = time.time()
-            with codecs.open(r"C:\Users\sunit\Desktop\CapstoneProject\data\nearby-all-public-posts\salesData.csv",'r',encoding ='utf-8') as csv_file:
+            with codecs.open(r"C:\Users\sunit\Desktop\CapstoneProject\data\nearby-all-public-posts\allposts.csv",'r',encoding ='utf-8') as csv_file:
+                
                 for line in csv_file:
                     combined_message_no += 1 
                     combined_message += line
+                    message_read += 1
 
                     if combined_message_no >= self.no_of_message_to_combine:
                         #send_message to the messaging service 
                         publish_func(combined_message)
-                        # SqsProducerKombu.send_message_SQS(combined_message)
+                        message_size += len(combined_message)
+                        message_published += 1
                         combined_message = ""
                         combined_message_no = 0 
-
-                time_elapsed = time.time() - row_read_start_time
-                return time_elapsed
+                           
+                    if self.terminate:  
+                        return message_published
           
         except Exception as e: 
             print(e)
 
-prod = producer(1000,"kafka")
+prod = producer(100,"rabbitmq")
 
 for i in range(10):
     print(prod.read_and_publish())
